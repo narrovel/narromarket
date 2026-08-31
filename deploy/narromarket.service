@@ -1,0 +1,59 @@
+[Unit]
+Description=NarroMarket bot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=narromarket
+Group=narromarket
+WorkingDirectory=/opt/narromarket
+EnvironmentFile=-/opt/narromarket/.env
+ExecStart=/usr/bin/env /opt/narromarket/venv/bin/python /opt/narromarket/bot.py
+Restart=always
+RestartSec=10
+# Telethon gives up reconnecting after a handful of tries and raises, so a network blip
+# exits the process. Those must restart forever; only exit code 78, which the bot uses
+# for "a human has to fix this", stops the unit.
+RestartPreventExitStatus=78
+LimitNOFILE=4096
+TasksMax=64
+
+# The bot installs a SIGTERM handler, so an orderly stop flushes the Telegram update
+# state and closes the database instead of being killed mid transaction.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Keep a journal copy alongside the application's rotated log for startup diagnostics.
+StandardOutput=journal
+StandardError=journal
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+PrivateMounts=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectClock=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+RemoveIPC=true
+UMask=0077
+ReadWritePaths=/opt/narromarket/data /opt/narromarket/logs
+
+[Install]
+WantedBy=multi-user.target

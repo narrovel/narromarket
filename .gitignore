@@ -1,0 +1,44 @@
+# Secrets and Telegram sessions
+.env
+.env.*
+!.env.example
+*.session
+*.session-*
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python caches and test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Package output
+build/
+dist/
+*.egg-info/
+
+# Runtime data
+data/
+logs/
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+images/*
+!images/.gitkeep
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
